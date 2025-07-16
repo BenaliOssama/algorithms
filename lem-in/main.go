@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	devide "lem-in/devide_ants"
+	// devide "lem-in/devide_ants"
 	graphs "lem-in/graphs"
 	fl "lem-in/parse_file"
 )
@@ -22,7 +22,7 @@ func main() {
 		return
 	}
 	// get data from file
-	nest, parsing_log, err := fl.FillTheNest(file_name)
+	nest, _, err := fl.FillTheNest(file_name)
 	if err != nil {
 		fmt.Printf("%s\n%v\n", err_msg, err)
 		return
@@ -44,30 +44,31 @@ func main() {
 	/*############# Find the Best Paths ##############*/
 
 	/*######## Use BFS ########*/
-	simple_paths := graph.AllPaths(graph.Start, graph.End, false)
-	simple, fsteps, err := devide.Devide(simple_paths, nest.Ants, graph.End.Name)
-	fmt.Println(simple_paths)
-	if err != nil {
-		fmt.Printf("%s\n%v\n", err_msg, err)
-		return
-	}
+	// simple_paths := graph.AllPaths(graph.Start, graph.End, false)
+	// simple, fsteps, err := devide.Devide(simple_paths, nest.Ants, graph.End.Name)
+	// fmt.Println(simple_paths)
+	// if err != nil {
+	// 	fmt.Printf("%s\n%v\n", err_msg, err)
+	// 	return
+	// }
 	/*####### Use B-Edmonds-Carp ########*/
 	graph.EdmondsKarp()
 	edmonds := graph.AllPaths(graph.End, graph.Start, true)
-	carp, lsteps, err := devide.Devide(edmonds, nest.Ants, graph.End.Name)
 	fmt.Println(edmonds)
-	if err != nil {
-		fmt.Printf("%s\n%v\n", err_msg, err)
-		return
-	}
+	// carp, lsteps, err := devide.Devide(edmonds, nest.Ants, graph.End.Name)
+	// fmt.Println(edmonds)
+	// if err != nil {
+	// 	fmt.Printf("%s\n%v\n", err_msg, err)
+	// 	return
+	// }
 	//####################################################################
 	/*############# Compare paths And Devide The Ants ##################*/
 
-	if fsteps <= lsteps {
-		fmt.Println(parsing_log)
-		devide.Print(simple)
-	} else {
-		fmt.Println(parsing_log)
-		devide.Print(carp)
-	}
+	// if fsteps <= lsteps {
+	// 	fmt.Println(parsing_log)
+	// 	devide.Print(simple)
+	// } else {
+	// 	fmt.Println(parsing_log)
+	// 	devide.Print(carp)
+	// }
 }
