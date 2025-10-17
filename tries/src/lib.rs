@@ -27,4 +27,22 @@ impl Trie{
             root : TrieNode::new(),
         }
     }
+
+
+    pub fn search(&self, word: &str) -> Option<&TrieNode> {
+        let mut current_node = &self.root;
+
+        for ch in word.chars() {
+            if let Some(node) = current_node.children.get(&ch) {
+                current_node = node;
+            } else {
+                return None;
+            }
+        }
+
+        Some(current_node)
+    }
+
 }
+
+
