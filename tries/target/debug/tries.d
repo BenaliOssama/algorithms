@@ -1,1 +1,1 @@
-/home/obenali/algorithms/tries/target/debug/tries: /home/obenali/algorithms/tries/src/main.rs
+/home/sam/algorithms/tries/target/debug/tries: /home/sam/algorithms/tries/src/lib.rs /home/sam/algorithms/tries/src/main.rs

@@ -1,37 +1,13 @@
-use std::collections::HashMap;
+use tries::{Trie, TrieNode};
 
-fn main() {
-    println!("Hello, world!");
-}
+fn main(){
+    println!("hello world");
+    
+    let trie = TrieNode::new();
 
-mod trie_node {
-    use std::collections::HashMap;
+    println!("{:?}", trie);
 
-    pub struct TrieNode {
-        pub children: HashMap<char, TrieNode>,
-    }
+    let trie = Trie::new();
 
-    impl TrieNode {
-        pub fn new() -> Self {
-            TrieNode {
-                children: HashMap::new(),
-            }
-        }
-    }
-}
-
-mod trie_class {
-    use crate::trie_node::TrieNode;
-
-    pub struct Trie {
-        root: TrieNode,
-    }
-
-    impl Trie {
-        fn new() -> Self {
-            Trie {
-                root: TrieNode::new(),
-            }
-        }
-    }
+    println!("{:?}", trie);
 }
