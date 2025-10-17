@@ -28,6 +28,17 @@ impl Trie{
         }
     }
 
+    pub fn autocomplete(&self, prefix: &str) -> Option<Vec<String>> {
+        let current_node = self.search(prefix)?;
+        
+        let mut word = String::from(prefix);
+        let mut words: Vec<String> = vec![];
+
+        self.collect_all_words(Some(current_node), &mut word, &mut words);
+
+        Some(words)
+    }
+
 
     pub fn search(&self, word: &str) -> Option<&TrieNode> {
         let mut current_node = &self.root;
@@ -62,10 +73,27 @@ impl Trie{
             current_node.is_end_of_word = true;
     }
     
-    pub fn collect_all_words(&self, node: &TrieNode, word: &str, words: &Vec<String>){
+    pub fn collect_all_words(
+        &self,
+        node: Option<&TrieNode>,
+        word: &mut String,
+        words: &mut Vec<String>,
+    ) {
+        let current_node = node.unwrap_or(&self.root);
 
+        for (key, child_node) in &current_node.children {
+            word.push(*key);
 
+            if child_node.is_end_of_word {
+                words.push(word.clone());
+            }
+
+           self.collect_all_words(Some(child_node), word, words);
+
+           word.pop(); // one step back, loop goes to the next key {backtrack}
+        }
     }
+
 }
 
 

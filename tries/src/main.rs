@@ -1,14 +1,7 @@
-use tries::{Trie, TrieNode};
+use tries::Trie;
 
 fn main(){
-    println!("hello world");
-    
-    let trie = TrieNode::new();
-
-    println!("{:?}", trie);
-
     let mut trie = Trie::new();
-    println!("{:?}", trie);
     trie.insert("ace");
     trie.insert("act");
     trie.insert("bad");
@@ -19,5 +12,6 @@ fn main(){
     trie.insert("cat");
     trie.insert("catnap");
     trie.insert("catnip");
-    println!("{:?}", trie);
+    let words = trie.autocomplete("ca");
+    println!("completing ca -> {:?}", words);
 }
