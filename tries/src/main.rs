@@ -7,7 +7,17 @@ fn main(){
 
     println!("{:?}", trie);
 
-    let trie = Trie::new();
-
+    let mut trie = Trie::new();
+    println!("{:?}", trie);
+    trie.insert("ace");
+    trie.insert("act");
+    trie.insert("bad");
+    trie.insert("bat");
+    trie.insert("bake");
+    trie.insert("batter");
+    trie.insert("cab");
+    trie.insert("cat");
+    trie.insert("catnap");
+    trie.insert("catnip");
     println!("{:?}", trie);
 }

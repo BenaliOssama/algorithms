@@ -2,14 +2,14 @@ use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct TrieNode {
-    children: HashMap<char, TrieNode>, 
+    children: HashMap<char, TrieNode>,
     is_end_of_word: bool,
 }
 
 impl TrieNode {
-    pub fn new()-> Self{
-        Self{
-            children : HashMap::new(),
+    pub fn new() -> Self {
+        Self {
+            children: HashMap::new(),
             is_end_of_word: false,
         }
     }
@@ -43,6 +43,31 @@ impl Trie{
         Some(current_node)
     }
 
+    pub fn contains(&self, word: &str) -> bool {
+        if let Some(node) = self.search(word) {
+            node.is_end_of_word
+        } else {
+            false
+        }
+    }
+    
+    pub fn insert(&mut self, word: &str) {
+        let mut current_node = &mut self.root;
+
+        for ch in word.chars() {
+                current_node = current_node.children
+                    .entry(ch).or_insert(TrieNode::new());
+            }
+
+            current_node.is_end_of_word = true;
+    }
+    
+    pub fn collect_all_words(&self, node: &TrieNode, word: &str, words: &Vec<String>){
+
+
+    }
 }
+
+
 
 
