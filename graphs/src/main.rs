@@ -1,22 +1,32 @@
-use graphs::Vertex;
-use std::collections::HashMap;
+use graphs::*;
+use std::rc::{Rc};
+use std::cell::RefCell;
 
 fn main() {
     // Create vertices
-    let a = Vertex::new("A");
-    let b = Vertex::new("B");
-    let c = Vertex::new("C");
-    let d = Vertex::new("D");
+    let a = Rc::new(RefCell::new(Vertex { value: "A", adjacent_vertices: vec![] }));
+    let b = Rc::new(RefCell::new(Vertex { value: "B", adjacent_vertices: vec![] }));
+    let c = Rc::new(RefCell::new(Vertex { value: "C", adjacent_vertices: vec![] }));
+    let d = Rc::new(RefCell::new(Vertex { value: "D", adjacent_vertices: vec![] }));
 
-    // Connect vertices (A->B, A->C, B->D, C->D, D->A to form a cycle)
-    Vertex::add_adjacent_vertex(&a, &b);
-    Vertex::add_adjacent_vertex(&a, &c);
-    Vertex::add_adjacent_vertex(&b, &d);
-    Vertex::add_adjacent_vertex(&c, &d);
-    Vertex::add_adjacent_vertex(&d, &a); // cycle
+    // Build connections (graph)
+    a.borrow_mut().adjacent_vertices.push(b.clone());
+    a.borrow_mut().adjacent_vertices.push(c.clone());
+    b.borrow_mut().adjacent_vertices.push(d.clone());
+    c.borrow_mut().adjacent_vertices.push(d.clone());
 
-    // DFS traversal
-    let mut visited = HashMap::new();
-    Vertex::dfs_traverse(&a, &mut visited);
-    println!("{visited:?}");
+    println!("BFS Traversal:");
+    Vertex::bfs_traverse(a.clone());
+
+    println!("\nSearching for vertex 'D':");
+    match Vertex::bfs(a.clone(), &"D") {
+        Some(found) => println!("Found: {}", found.borrow().value),
+        None => println!("Not found"),
+    }
+
+    println!("\nSearching for vertex 'X':");
+    match Vertex::bfs(a.clone(), &"X") {
+        Some(found) => println!("Found: {}", found.borrow().value),
+        None => println!("Not found"),
+    }
 }

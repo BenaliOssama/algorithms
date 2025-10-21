@@ -1,6 +1,7 @@
 use std::rc::{Rc};
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::collections::VecDeque;
 
 type VertexRef<T> = Rc<RefCell<Vertex<T>>>;
 
@@ -28,6 +29,61 @@ impl<T> Vertex<T> {
         this.borrow_mut().adjacent_vertices.push(Rc::clone(vertex));
     }
 }
+
+
+
+
+impl<T: PartialEq + Clone + std::fmt::Display> Vertex<T> {
+    pub fn bfs_traverse(start: VertexRef<T>) {
+        let mut queue: VecDeque<VertexRef<T>> = VecDeque::new();
+        let mut visited: HashMap<*const RefCell<Vertex<T>>, bool> = HashMap::new();
+
+        // mark start as visited
+        let start_ptr = Rc::as_ptr(&start);
+        visited.insert(start_ptr, true);
+        queue.push_back(start.clone());
+
+        while let Some(current) = queue.pop_front() {
+            let current_borrow = current.borrow();
+            println!("{}", current_borrow.value);
+
+            for neighbor in &current_borrow.adjacent_vertices {
+                let n_ptr = Rc::as_ptr(neighbor);
+                if !visited.contains_key(&n_ptr) {
+                    visited.insert(n_ptr, true);
+                    queue.push_back(neighbor.clone());
+                }
+            }
+        }
+    }
+    pub fn bfs(start: VertexRef<T>, target: &T) -> Option<VertexRef<T>> {
+        let mut queue: VecDeque<VertexRef<T>> = VecDeque::new();
+        let mut visited: HashMap<*const RefCell<Vertex<T>>, bool> = HashMap::new();
+
+        let start_ptr = Rc::as_ptr(&start);
+        visited.insert(start_ptr, true);
+        queue.push_back(start.clone());
+
+        while let Some(current) = queue.pop_front() {
+            let current_borrow = current.borrow();
+
+            if &current_borrow.value == target {
+                return Some(current.clone());
+            }
+
+            for neighbor in &current_borrow.adjacent_vertices {
+                let n_ptr = Rc::as_ptr(neighbor);
+                if !visited.contains_key(&n_ptr) {
+                    visited.insert(n_ptr, true);
+                    queue.push_back(neighbor.clone());
+                }
+            }
+        }
+
+        None
+    }
+}
+
 
 impl<T: std::cmp::PartialEq + Clone> Vertex<T> {
     pub fn dfs_traverse(
@@ -73,5 +129,9 @@ impl<T: std::cmp::PartialEq + Clone> Vertex<T> {
 
         None
     }
+
+
 }
+
+
 
